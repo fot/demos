@@ -1,0 +1,96 @@
+{% if violations|length > 0 %}
+
+    <table id='violations'>
+
+        <tr>    
+            <th>MSID</th>    
+            <th>Description</th>    
+            <th>Type of Violation</th>              
+            <th>Start Time</th>    
+            <th>Stop Time</th>    
+            <th>Total Duration (Hours)</th>    
+            <th>Number of Excursions</th>    
+            <th>Observed</th>    
+            <th>Expected</th>    
+        </tr>    
+
+        {% for key in violations.keys() %}
+            {% if 'expst' in violations[key]['type'] %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ violations[key]['description']}}</td>
+                    <td> Expected State </td>
+                    <td>{{ violations[key]['datespans'][0][0] }}</td>
+                    <td>{{ violations[key]['datespans'][-1][-1] }}</td>
+                    <td>{{ '%9.3f'| format(violations[key]['total_duration']) }}
+                    <td>{{ violations[key]['num_excursions']}}
+                    <td>{{ violations[key]['observed']}}
+                    <td>{{ violations[key]['expectation']}}
+                </tr>
+            {% endif %}
+            {% if 'limit' in violations[key]['type'] %}
+                {% if 'warning_high' in violations[key].keys() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ violations[key]['description']}} </td>
+                        <td> Warning High </td>
+                        <td>{{ violations[key]['warning_high']['datespans'][0][0] }}</td>
+                        <td>{{ violations[key]['warning_high']['datespans'][-1][-1] }}</td>
+                        <td>{{ '%9.3f'| format(violations[key]['warning_high']['total_duration']) }}
+                        <td>{{ violations[key]['warning_high']['num_excursions']}}
+                        <td>{{ violations[key]['warning_high']['observed']}}
+                        <td>{{ violations[key]['warning_high']['expectation']}}
+                    </tr>
+                {% endif %}
+
+                {% if 'caution_high' in violations[key].keys() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ violations[key]['description']}} </td>
+                        <td> Caution High </td>
+                        <td>{{ violations[key]['caution_high']['datespans'][0][0] }}</td>
+                        <td>{{ violations[key]['caution_high']['datespans'][-1][-1] }}</td>
+                        <td>{{ '%9.3f'| format(violations[key]['caution_high']['total_duration']) }}
+                        <td>{{ violations[key]['caution_high']['num_excursions']}}
+                        <td>{{ violations[key]['caution_high']['observed']}}
+                        <td>{{ violations[key]['caution_high']['expectation']}}
+                    </tr>
+                {% endif %}
+
+                {% if 'caution_low' in violations[key].keys() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ violations[key]['description']}} </td>
+                        <td> Caution Low </td>
+                        <td>{{ violations[key]['caution_low']['datespans'][0][0] }}</td>
+                        <td>{{ violations[key]['caution_low']['datespans'][-1][-1] }}</td>
+                        <td>{{ '%9.3f'| format(violations[key]['caution_low']['total_duration']) }}
+                        <td>{{ violations[key]['caution_low']['num_excursions']}}
+                        <td>{{ violations[key]['caution_low']['observed']}}
+                        <td>{{ violations[key]['caution_low']['expectation']}}
+                    </tr>
+                {% endif %}
+
+                {% if 'warning_low' in violations[key].keys() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ violations[key]['description']}} </td>
+                        <td> Warning Low </td>
+                        <td>{{ violations[key]['warning_low']['datespans'][0][0] }}</td>
+                        <td>{{ violations[key]['warning_low']['datespans'][-1][-1] }}</td>
+                        <td>{{ '%9.3f'| format(violations[key]['warning_low']['total_duration']) }}
+                        <td>{{ violations[key]['warning_low']['num_excursions']}}
+                        <td>{{ violations[key]['warning_low']['observed']}}
+                        <td>{{ violations[key]['warning_low']['expectation']}}
+                    </tr>
+                {% endif %}
+
+            {% endif %}
+        {% else %}
+            <tr><td> List was supposed to iterate but didn't </td></tr>
+        {% endfor %}
+
+
+    </table>
+
+{% endif %}
